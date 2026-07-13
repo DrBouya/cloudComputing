@@ -1,0 +1,86 @@
+import { test, expect } from '@playwright/test';
+
+test('test', async ({ page }) => {
+  await page.goto('http://localhost:3001/');
+
+
+  await expect(page).toHaveTitle(/فروشگاه نمونه/);
+  await page.getByRole('button', { name: 'شروع خرید (ایجاد جلسه)' }).click();
+  const text = await page.locator('#messages').textContent();
+
+  const sessionId = text.replace('جلسه ایجاد شد:', '').trim();
+  
+  await expect(page.getByRole('button', { name: 'افزودن' }).first()).toBeEnabled();
+  await expect(page.getByRole('button', { name: 'افزودن' }).nth(1)).toBeEnabled();
+  await expect(page.getByRole('button', { name: 'افزودن' }).nth(2)).toBeEnabled();
+
+  await page.getByRole('button', { name: 'افزودن' }).first().click();
+  await page.getByRole('button', { name: 'افزودن' }).nth(1).click();
+  await page.getByRole('button', { name: 'افزودن' }).nth(2).click();
+  await page.getByRole('button', { name: 'رفتن به صندوق' }).click();
+  await page.getByRole('link', { name: 'نمایش وضعیت جلسه' }).click();
+ // await page.getByRole('textbox', { name: 'Session ID:' }).click();
+  await page.getByRole('textbox', { name: 'Session ID:' }).fill(sessionId);
+  await page.getByRole('button', { name: 'بررسی وضعیت' }).click();
+});
+
+
+
+----------------------------------------------------
+import { test, expect } from '@playwright/test';
+
+test('Reserve-Success', async ({ page }) => {
+  await page.goto('http://localhost:3001/');
+
+
+
+  await expect(page).toHaveTitle(' رزرو بلیت سینما');    //title
+  await expect(page).toHaveURL('http://localhost:3001/')  //url
+
+  await expect(
+    page.getByRole('button', { name: 'رزرو' }).first()
+  ).toBeEnabled();
+  
+  await expect(
+    page.getByRole('button', { name: 'رزرو' }).first()
+  ).toHaveText('رزرو');
+
+  await expect(page.getByRole('button', { name: 'رزرو' }).first()).toBeVisible();
+  await expect(page.getByRole('button', { name: 'رزرو' }).nth(1)).toBeVisible();
+  await expect(page.getByRole('button', { name: 'رزرو' }).nth(2)).toBeVisible();
+
+  await expect(page.getByText('Inception (صندلی باقیمانده: 1')).toContainText('باقیمانده');
+
+
+  await page.getByRole('button', { name: 'رزرو' }).first().click();
+
+  await expect(page).toHaveTitle( 'فرم رزرو');
+  
+
+  await page.locator('#seat-count').click();
+  await page.locator('#seat-count').fill('1');
+
+  await page.getByRole('button', { name: 'رزرو موقت' }).click();
+
+  await page.locator('#user-name').click();
+  await page.locator('#user-name').fill('zohre');
+  await page.locator('#user-phone').click();
+  await page.locator('#user-phone').fill('09151192344');
+  await page.getByRole('button', { name: 'ثبت اطلاعات' }).click();
+  await page.getByRole('button', { name: 'پرداخت و نهایی‌سازی' }).click();
+  await expect(page.getByText('رزرو شما نهایی شد')).toContainText('رزرو شما نهایی شد');
+  await expect(page.getByText('رزرو شما نهایی شد')).toBeVisible();
+});
+
+---------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
