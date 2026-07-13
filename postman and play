@@ -1,0 +1,46 @@
+QA Test Report (Postman & Playwright)
+1. Introduction
+هدف این پروژه پیاده‌سازی و اعتبارسنجی فرآیند کامل درخواست مرخصی با استفاده از Postman و Playwright است. سناریوهای موفق و ناموفق بررسی شده و صحت تغییر State، سازگاری داده‌ها و رفتار UI و API ارزیابی شده است.
+2. Test Environment
+- API: Leave Management API
+- UI: HTML/CSS/JavaScript
+- Tools: Postman, Newman, Playwright
+- Runtime: Node.js
+3. Postman Test Scenarios
+سناریوهای اجرا شده:
+• Create Draft
+• Submit Request
+• Approve Request
+• Reject Request
+• Cancel Draft
+• Cancel Submitted Request
+• Invalid ID (404)
+• Invalid Input (400)
+• Invalid State (409)
+
+در این بخش شناسه درخواست به صورت Dynamic بین درخواست‌ها منتقل شد و State پس از هر عملیات بررسی گردید.
+4. State Transition Analysis
+Draft → Submit → Submitted
+Submitted → Approve → Approved
+Submitted → Reject → Rejected
+Draft → Cancel → Cancelled
+Submitted → Cancel → Cancelled
+Approved → Cancel → 409
+Approved → Submit → 409
+
+نتیجه: تمامی تغییر وضعیت‌های مجاز با موفقیت انجام شدند و تغییر وضعیت‌های نامعتبر با خطای مناسب مدیریت شدند.
+5. Newman Report Analysis
+گزارش Newman شامل تعداد درخواست‌ها، Assertionها، تست‌های موفق و ناموفق است. تمامی سناریوهای موفق بدون خطا اجرا شدند و سناریوهای منفی کدهای وضعیت مورد انتظار (400،404،409) را بازگرداندند.
+6. Playwright E2E Scenarios
+سناریوهای اجرا شده:
+• Approve Flow
+• Reject Flow
+• Draft Cancel
+• Submitted Cancel
+• Invalid Date
+
+در هر مرحله نمایش پیام‌ها، تغییر وضعیت، عناصر DOM و فعال بودن دکمه‌ها بررسی شد.
+7. Error Scenario Analysis
+ورود داده ناقص باعث جلوگیری از ثبت درخواست شد و پیام موفقیت نمایش داده نشد. در سناریوهای State نامعتبر، وضعیت API تغییر نکرد و کد خطای مناسب بازگردانده شد.
+8. Conclusion
+تمامی سناریوهای Happy Path و Failure مطابق انتظار اجرا شدند. انتقال داده به صورت Dynamic انجام شد، Data Consistency حفظ گردید و تغییرات State در UI و API اعتبارسنجی شد. این مجموعه تست پوشش مناسبی از فرآیند ثبت، ارسال، تأیید، رد و لغو درخواست مرخصی ارائه می‌دهد.
