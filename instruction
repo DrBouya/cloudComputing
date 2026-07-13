@@ -1,0 +1,48 @@
+jmeter:
+
+in path jmeetr
+jmeter.bat
+
+report:
+jmeter -n -t "pathof .jmx" -l "path of result.jtl" -e -o "path of /report"
+
+
+-----------------------------------------------------
+
+newman :
+
+npm install -g newman
+npm install -g newman-reporter-htmlextra 
+
+cool.json
+env.json
+
+in path of col & env 
+
+newman run col.json -e env.json -r cli,json,htmlextra --reporter-htmlextra-export report.html --reporter-json-export report.json
+
+-----------------------------------------------------------
+
+playwright:
+
+playrught in vs code microsoft install
+
+new folder for project : npm init playwright@latest
+
+in : playright.config.js 
+
+???? ????? ?? ????????? ???? ???? ? ... ??? ??? ???? ???? ????? 
+
+
+{
+      name: 'chromm',
+      use: { ...devices['Desktop Chrome'] },
+	channel : 'chrome'
+    },
+
+
+==> npx playwright codejen --channel =chrome "localhost:3000"
+
+=> npx playwright test
+
+=> npx playwright show-report
